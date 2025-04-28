@@ -1,3 +1,8 @@
+mod models;
+mod view_models;
+mod word_logic;
+mod game_logic;
+
 use sycamore::prelude::*;
 
 #[component]
