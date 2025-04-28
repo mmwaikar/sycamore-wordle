@@ -26,3 +26,14 @@ pub enum GameStatus {
     Won,
     Lost,
 }
+
+impl GameStatus {
+    pub fn status(&self) -> String {
+        match self {
+            GameStatus::NotStarted => "Not started".to_string(),
+            GameStatus::InProgress => "In-progress".to_string(),
+            GameStatus::Won => "Won".to_string(),
+            GameStatus::Lost => "Lost".to_string(),
+        }
+    }
+}
