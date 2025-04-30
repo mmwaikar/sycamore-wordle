@@ -103702,10 +103702,7 @@ nowheres
 nowhither
 nowise
 nowness
-nownesses
-nows
 nowt
-nowts
 noxious
 noxiously
 noxiousness

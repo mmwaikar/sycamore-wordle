@@ -1,20 +1,31 @@
+mod game_logic;
 mod models;
 mod view_models;
-mod word_logic;
-mod game_logic;
 mod views;
+mod word_lib;
+mod word_logic;
 
-use models::{game::{Game, GameBoard}, game_grid::GameGrid};
+use models::{
+    game::{Game, GameBoard},
+    game_grid::GameGrid,
+};
 use sycamore::prelude::*;
 use view_models::{keyboard::Keyboard, position_context::PositionContext};
 use views::{game_grid_view::GameGridView, keyboard_view::KeyboardView};
+use word_lib::get_random_word;
 
 #[component]
 fn App() -> View {
     let position_context = PositionContext::new();
     let game_grid = GameGrid::new();
     let keyboard = Keyboard::new();
-    let game = Game::new("whale".to_string());
+
+    let dev_mode = true;
+    let game = match dev_mode {
+        true => Game::new("whale".to_string()),
+        false => Game::new(get_random_word()),
+    };
+    console_log!("game: {:?}", game);
     let game_board = GameBoard::new(game);
 
     provide_context(position_context);
@@ -23,7 +34,7 @@ fn App() -> View {
     provide_context(game_board);
 
     let gbc = use_context::<GameBoard>();
-    
+
     view! {
         div {
             h1 { "Welcome to your favorite Wordle game written in Rust using Sycamore!" }
