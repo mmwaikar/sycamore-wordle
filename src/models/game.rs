@@ -1,3 +1,5 @@
+use sycamore::prelude::*;
+
 use super::enums::GameStatus;
 
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -11,26 +13,26 @@ impl Game {
     }
 }
 
-#[derive(Clone, Default)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct GameBoard {
     pub game: Game,
-    pub game_status: GameStatus,
+    pub game_status: Signal<GameStatus>,
 }
 
 impl GameBoard {
     pub fn new(game: Game) -> Self {
         Self {
             game,
-            game_status: GameStatus::NotStarted,
+            game_status: create_signal(GameStatus::NotStarted),
         }
     }
 
-    pub fn update(&self, game_status: GameStatus) -> Self {
-        Self {
-            game_status,
-            ..self.clone()
-        }
-    }
+    // pub fn update(&self, game_status: GameStatus) -> Self {
+    //     Self {
+    //         game_status: self.game_status.set(game_status),
+    //         ..self.clone()
+    //     }
+    // }
 
     // pub fn init(
     //     game: Game,

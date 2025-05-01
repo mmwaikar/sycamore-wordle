@@ -38,7 +38,7 @@ fn App() -> View {
     view! {
         div {
             h1 { "Welcome to your favorite Wordle game written in Rust using Sycamore!" }
-            h3 { "Game Status: " (gbc.game_status.status()) }
+            h3(class=gbc.game_status.get().css_class()) { "Game Status: " (gbc.game_status.get().status()) }
         }
 
         div(class="game") {
