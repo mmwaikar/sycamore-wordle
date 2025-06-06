@@ -7,13 +7,14 @@ use crate::{
     models::{
         constants::WORD_LENGTH, enums::GameStatus, game::GameBoard, game_grid::GameGrid, guess::{Guess, GuessOutcome}, position::Position,
     },
-    view_models::{keyboard::Keyboard, position_context::PositionContext},
+    view_models::{hide_context::HideContext, keyboard::Keyboard, position_context::PositionContext}, word_lib::is_valid_word,
 };
 
 #[component]
 pub fn KeyboardView() -> View {
     // global contexts
     let position_context = use_context::<PositionContext>();
+    let hide_context = use_context::<HideContext>();
     let game_grid = use_context::<GameGrid>();
     let keyboard = use_context::<Keyboard>();
     let game_board = use_context::<GameBoard>();
@@ -85,55 +86,66 @@ pub fn KeyboardView() -> View {
             .map(|aws| aws.alphabet.get_clone_untracked())
             .collect::<Vec<String>>()
             .join("");
-        let guess = Guess::new(guess_count + 1, word);
-        // console_log!("guess: {:?}", guess);
-        let guess_outcome = get_guess_outcome(&game_board.game, &guess);
 
-        // also increment the number of guesses
-        num_guesses.set(guess_count + 1);
-        &game_board.game_status.set(guess_outcome.intermediate_game_status);
-
-        if guess_outcome.intermediate_game_status == GameStatus::Won {
-            update(&guess_outcome, &game_grid, &keyboard, &prev_position);
-            // for (i, aws) in guess_outcome.alphabets_with_statuses.iter().enumerate() {
-            //     game_grid.char_grid[prev_position.row as usize][i].update_status(aws.status);
-            // }
-
-            // for (i, c) in guess_outcome.guess.word.chars().enumerate() {
-            //     let aws = guess_outcome.alphabets_with_statuses[i];
-            //     let ka = keyboard.keyboard.iter().find(|ka| ka.alphabet == c);
-            //     if let Some(ka) = ka {
-            //         ka.status.set(aws.status);
-            //     }
-            // }
-            // console_log!("You won!");
-        } else if guess_outcome.intermediate_game_status == GameStatus::Lost {
-            update(&guess_outcome, &game_grid, &keyboard, &prev_position);
-            // for (i, aws) in guess_outcome.alphabets_with_statuses.iter().enumerate() {
-            //     game_grid.char_grid[prev_position.row as usize][i].update_status(aws.status);
-            // }
-
-            // for (i, c) in guess_outcome.guess.word.chars().enumerate() {
-            //     let aws = guess_outcome.alphabets_with_statuses[i];
-            //     let ka = keyboard.keyboard.iter().find(|ka| ka.alphabet == c);
-            //     if let Some(ka) = ka {
-            //         ka.status.set(aws.status);
-            //     }
-            // }
-            // console_log!("You lost!");
+        if is_valid_word(word.as_str()) == false {
+            // console_log!("Invalid word: {}", word);
+            hide_context.show();
+            return;
         } else {
-            update(&guess_outcome, &game_grid, &keyboard, &prev_position);
-            // for (i, aws) in guess_outcome.alphabets_with_statuses.iter().enumerate() {
-            //     game_grid.char_grid[prev_position.row as usize][i].update_status(aws.status);
-            // }
+            hide_context.hide();
+            let guess = Guess::new(guess_count + 1, word);
+            // console_log!("guess: {:?}", guess);
+            let guess_outcome = get_guess_outcome(&game_board.game, &guess);
 
-            // for (i, c) in guess_outcome.guess.word.chars().enumerate() {
-            //     let aws = guess_outcome.alphabets_with_statuses[i];
-            //     let ka = keyboard.keyboard.iter().find(|ka| ka.alphabet == c);
-            //     if let Some(ka) = ka {
-            //         ka.status.set(aws.status);
-            //     }
-            // }
+            // set chars entered to 0
+            chars_entered.set(0);
+            
+            // also increment the number of guesses
+            num_guesses.set(guess_count + 1);
+            &game_board.game_status.set(guess_outcome.intermediate_game_status);
+
+            if guess_outcome.intermediate_game_status == GameStatus::Won {
+                update(&guess_outcome, &game_grid, &keyboard, &prev_position);
+                // for (i, aws) in guess_outcome.alphabets_with_statuses.iter().enumerate() {
+                //     game_grid.char_grid[prev_position.row as usize][i].update_status(aws.status);
+                // }
+
+                // for (i, c) in guess_outcome.guess.word.chars().enumerate() {
+                //     let aws = guess_outcome.alphabets_with_statuses[i];
+                //     let ka = keyboard.keyboard.iter().find(|ka| ka.alphabet == c);
+                //     if let Some(ka) = ka {
+                //         ka.status.set(aws.status);
+                //     }
+                // }
+                // console_log!("You won!");
+            } else if guess_outcome.intermediate_game_status == GameStatus::Lost {
+                update(&guess_outcome, &game_grid, &keyboard, &prev_position);
+                // for (i, aws) in guess_outcome.alphabets_with_statuses.iter().enumerate() {
+                //     game_grid.char_grid[prev_position.row as usize][i].update_status(aws.status);
+                // }
+
+                // for (i, c) in guess_outcome.guess.word.chars().enumerate() {
+                //     let aws = guess_outcome.alphabets_with_statuses[i];
+                //     let ka = keyboard.keyboard.iter().find(|ka| ka.alphabet == c);
+                //     if let Some(ka) = ka {
+                //         ka.status.set(aws.status);
+                //     }
+                // }
+                // console_log!("You lost!");
+            } else {
+                update(&guess_outcome, &game_grid, &keyboard, &prev_position);
+                // for (i, aws) in guess_outcome.alphabets_with_statuses.iter().enumerate() {
+                //     game_grid.char_grid[prev_position.row as usize][i].update_status(aws.status);
+                // }
+
+                // for (i, c) in guess_outcome.guess.word.chars().enumerate() {
+                //     let aws = guess_outcome.alphabets_with_statuses[i];
+                //     let ka = keyboard.keyboard.iter().find(|ka| ka.alphabet == c);
+                //     if let Some(ka) = ka {
+                //         ka.status.set(aws.status);
+                //     }
+                // }
+            }
         }
     };
 

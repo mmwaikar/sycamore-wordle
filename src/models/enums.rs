@@ -40,9 +40,9 @@ impl GameStatus {
     pub fn css_class(&self) -> String {
         match self {
             GameStatus::NotStarted => "default-char".to_string(),
-            GameStatus::InProgress => "absent".to_string(),
-            GameStatus::Won => "correct-position".to_string(),
-            GameStatus::Lost => "incorrect-position".to_string(),
+            GameStatus::InProgress => "in-progress".to_string(),
+            GameStatus::Won => "won".to_string(),
+            GameStatus::Lost => "lost".to_string(),
         }
     }
 }
