@@ -1,13 +1,13 @@
 use sycamore::prelude::*;
 
-use crate::models::game_grid::GameGrid;
+use crate::view_models::guess_grid_vm::GuessGridVM;
 
 #[component]
 pub fn GameGridView() -> View {
-    let game_grid = use_context::<GameGrid>();
+    let guess_grid_vm = use_context::<GuessGridVM>();
 
-    let tr_views: Vec<View> = game_grid
-        .char_grid
+    let tr_views: Vec<View> = guess_grid_vm
+        .guess_alphabets
         .iter()
         .map(|row| {
             let td_views: Vec<View> = row

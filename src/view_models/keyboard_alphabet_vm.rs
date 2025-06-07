@@ -3,13 +3,13 @@ use sycamore::prelude::*;
 use crate::models::enums::AlphabetStatus;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
-pub struct KeyboardAlphabet {
+pub struct KeyboardAlphabetVM {
     pub alphabet: char,
     pub row: u8,
     pub status: Signal<AlphabetStatus>,
 }
 
-impl KeyboardAlphabet {
+impl KeyboardAlphabetVM {
     pub fn init() -> Self {
         Self {
             alphabet: ' ',

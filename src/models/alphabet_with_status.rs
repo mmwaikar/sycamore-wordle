@@ -7,29 +7,29 @@ pub struct AlphabetWithStatus {
 }
 
 impl AlphabetWithStatus {
-    pub fn init() -> Self {
-        Self {
-            alphabet: ' ',
-            status: AlphabetStatus::default(),
-        }
-    }
+    // pub fn init() -> Self {
+    //     Self {
+    //         alphabet: ' ',
+    //         status: AlphabetStatus::default(),
+    //     }
+    // }
 
-    pub fn new(alphabet: char) -> Self {
-        Self {
-            alphabet,
-            status: AlphabetStatus::default(),
-        }
-    }
+    // pub fn new(alphabet: char) -> Self {
+    //     Self {
+    //         alphabet,
+    //         status: AlphabetStatus::default(),
+    //     }
+    // }
 
     pub fn with_status(alphabet: char, status: AlphabetStatus) -> Self {
         Self { alphabet, status }
     }
 
-    pub fn update_status(&self, status: AlphabetStatus) -> Self {
-        Self { status, ..*self }
-    }
+    // pub fn update_status(&self, status: AlphabetStatus) -> Self {
+    //     Self { status, ..*self }
+    // }
 
-    pub fn get_alphabet(&self) -> char {
-        self.alphabet
-    }
+    // pub fn get_alphabet(&self) -> char {
+    //     self.alphabet
+    // }
 }

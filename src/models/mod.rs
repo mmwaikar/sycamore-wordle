@@ -4,4 +4,3 @@ pub mod enums;
 pub mod game;
 pub mod guess;
 pub mod position;
-pub mod game_grid;
